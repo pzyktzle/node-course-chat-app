@@ -18,14 +18,14 @@ function scrollToBottom () {
 };
 
 //
-// on connect
+// on connect <---
 //
 socket.on('connect', function () {
   var params = jQuery.deparam(window.location.search);
 
-  // ************
-  // emit join
-  // ************
+  //
+  // emit join --->
+  //
   socket.emit('join', params, function (err) {
     if (err) {
       alert(err);
@@ -38,14 +38,14 @@ socket.on('connect', function () {
 });
 
 //
-// on disconnect
+// on disconnect <---
 //
 socket.on('disconnect', function () {
   console.log('Disconnected from server');
 });
 
 //
-// on updateUserList
+// on updateUserList <---
 //
 socket.on('updateUserList', function (users) {
   var ol = jQuery('<ol></ol>');
@@ -56,7 +56,7 @@ socket.on('updateUserList', function (users) {
 });
 
 //
-// on newMessage
+// on newMessage <---
 //
 socket.on('newMessage', function (message) {
   var formattedTime = moment(message.createdAt).format('h:mm a');
@@ -71,7 +71,7 @@ socket.on('newMessage', function (message) {
 });
 
 //
-// listen for newLocationMessage
+// on newLocationMessage <---
 //
 socket.on('newLocationMessage', function (message) {
   var formattedTime = moment(message.createdAt).format('h:mm a');
@@ -96,8 +96,10 @@ jQuery('#message-form').on('submit', function (e) {
   }
   messageButton.attr('disabled', 'disabled');
 
+  //
+  // emit createMessage --->
+  //
   socket.emit('createMessage', {
-    from: 'User',
     text: messageTextbox.val()
   }, function () {
     messageTextbox.val(''); // clears text when this callback is fired (acknowlegment from the server)
@@ -117,6 +119,9 @@ locationButton.attr('disabled', 'disabled').text('Sending location ...');
   navigator.geolocation.getCurrentPosition(function (position) {
     locationButton.removeAttr('disabled').text('Send location');
 
+    //
+    // emit createLocationMessage --->
+    //
     socket.emit('createLocationMessage', {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude
