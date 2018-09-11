@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/server.js",
-    "test": "mocha server/**/*.test.js",
-    "test-watch": "nodemon --exec \"npm text\""
+    "// test": "mocha --debug-brk --reporter spec --inspect server/**/*.test.js",
+    "test": "mocha --reporter spec --inspect server/**/*.test.js",
+    "test-watch": "nodemon -e test.js --exec \"npm test\""
   },
   "engines": {
     "node": "10.9.0"
